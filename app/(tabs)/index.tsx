@@ -1,78 +1,31 @@
-import { Image, StyleSheet, Platform,BackHandler } from 'react-native';
+import React from "react";
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+import { Flex,Text,Box } from "@react-native-material/core";
 
-// import * as SecureStore from 'expo-secure-store';
+import * as SecureStore from 'expo-secure-store';
 
 export default function HomeScreen() {
-  // const backAction = () => {
-  //   SecureStore.deleteItemAsync('token').then(()=>{
-  //     BackHandler.exitApp();
-  //   });
+  const [userData, setUserData] = React.useState({name:'',state:'',soag:''});
 
-  //   return true;
-  // };  
-
-  // const backHandler = BackHandler.addEventListener(
-  //   "hardwareBackPress",
-  //   backAction
-  // );  
+  SecureStore.getItemAsync('userdata',{})
+  .then(function(userdata_str:any){
+    if(userdata_str){
+      const userdata = JSON.parse(userdata_str)
+      setUserData(userdata)
+    }
+  }).catch((reason:any)=>{});
 
   return (
-    <ParallaxScrollView>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({ ios: 'cmd + d', android: 'cmd + m' })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+    <Flex fill>
+      <Box h={100} mt={20} p={10}>
+      <Text variant="h4">مرحباً..</Text>
+      </Box>
+      <Box p={10}>
+      <Text>المتحصل {userData.name}</Text>
+      <Text>الولاية {userData.state}</Text>
+      <Text>السوق {userData.soag}</Text>
+
+      </Box>
+      </Flex>
   );
 }
-
-const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
-});

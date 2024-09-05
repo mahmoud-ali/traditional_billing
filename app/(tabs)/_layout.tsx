@@ -24,7 +24,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="payment"
+        name="invoice"
         options={{
           title: 'أمر تحصيل',
           tabBarIcon: ({ color, focused }) => (

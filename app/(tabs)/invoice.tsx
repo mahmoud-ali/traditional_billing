@@ -1,12 +1,12 @@
-import { View, Alert,StyleSheet, ToastAndroid } from "react-native";
+import { Alert,StyleSheet, ToastAndroid } from "react-native";
 
 import { useForm, Controller } from "react-hook-form";
 
 import React from "react";
-import { Flex,Button,TextInput,Text,Spacer,Box } from "@react-native-material/core";
+import { Flex,Button,TextInput,Text,Box } from "@react-native-material/core";
 import * as SecureStore from 'expo-secure-store';
 
-export default function Payment() {
+export default function Invoice() {
   const [token, setToken] = React.useState('');
   const [isPosting, setIsPosting] = React.useState(false);
 
