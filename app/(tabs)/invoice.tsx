@@ -111,6 +111,7 @@ export default function Invoice() {
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
+              inputMode='numeric'
             />
           )}
           name="quantity_in_shoal"
@@ -129,6 +130,7 @@ export default function Invoice() {
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
+              inputMode='decimal'
             />
           )}
           name="amount"
