@@ -4,13 +4,42 @@ import { useForm, Controller } from "react-hook-form";
 
 import React from "react";
 import { Flex,Button,TextInput,Text,Box } from "@react-native-material/core";
+import { SafeAreaView } from 'react-native-safe-area-context';
 import * as SecureStore from 'expo-secure-store';
 
 export default function Invoice() {
+  interface InvoiceType {
+    name:string,
+    quantity_in_shoal:string,
+    amount:string
+  }
+
   const [token, setToken] = React.useState('');
   const [isPosting, setIsPosting] = React.useState(false);
 
-  function invoice_request(data:object){
+  SecureStore.getItemAsync('userdata',{})
+  .then(function(userdata_str:any){
+    const userdata = JSON.parse(userdata_str);
+    if(userdata.token){
+      setToken(userdata.token)
+    }  
+  }).catch((reason:any)=>{});
+
+  const { control, handleSubmit, reset, setFocus, formState: { errors,isValid } } = useForm({
+    defaultValues: {
+      name: '',
+      quantity_in_shoal: '',
+      amount: ''
+    }
+  });
+
+  const onSubmit = function(data:InvoiceType){
+    invoice_request(data)
+  } 
+
+  const onError = (errors:any, e:any) => console.log('Error',errors);  
+
+  function invoice_request(data:InvoiceType){
     setIsPosting(true)
     ToastAndroid.showWithGravity('Connecting..', ToastAndroid.SHORT,ToastAndroid.BOTTOM);
     fetch('https://mineralsgate.com/app/api-traditional/invoice/',{
@@ -25,11 +54,13 @@ export default function Invoice() {
         setIsPosting(false)
 
         if(response.status==200){
-          response.json().then((data=>{
-            if(data.status==0){
-              Alert.alert('تمت العملية بنجاح', 'رقم الفاتورة: '+ data.invoiceId)
+          response.json().then((body=>{
+            if(body.status==0){
+              reset();
+              Alert.alert('تمت العملية بنجاح', `رقم امر الدفع: ${body.invoiceId}\n اسم المعدن: ${data.name}\n الكمية: ${data.quantity_in_shoal}\n المبلغ: ${data.amount}`)
+              setFocus("name", { shouldSelect: true })
             }else{
-              Alert.alert('فشلت العملية', data.statusDescription)
+              Alert.alert('فشلت العملية', body.statusDescription)
             }
           })).catch(error => {
             ToastAndroid.showWithGravity(error.message , ToastAndroid.LONG,ToastAndroid.BOTTOM);//'Unable to connect, please try again later.'+
@@ -44,35 +75,11 @@ export default function Invoice() {
   
   }
 
-  const { control, handleSubmit, formState: { errors,isValid } } = useForm({
-    defaultValues: {
-      name: '',
-      quantity_in_shoal: '',
-      amount: ''
-    }
-  });
-
-  const onSubmit = function(data:any){
-    invoice_request(data)
-  } 
-
-  const onError = (errors:any, e:any) => console.log('Error',errors);  
-
-  SecureStore.getItemAsync('userdata',{})
-  .then(function(userdata_str:any){
-    const userdata = JSON.parse(userdata_str)
-    if(userdata.token){
-      setToken(userdata.token)
-    }
-  }).catch((reason:any)=>{});
-
   return (
-    <Flex fill>
-      <Box h={100} mt={20} p={10}>
-      <Text variant="h4">تحصيل التعدين التقليدي</Text>
-      <Text>ادخل البيانات الاتية:</Text>
-      </Box>
+    <SafeAreaView>
       <Box p={10}>
+        <Text variant="h4">تحصيل التعدين التقليدي</Text>
+        <Text>ادخل البيانات الاتية:</Text>
         <Controller
           control={control}
           rules={{
@@ -132,15 +139,11 @@ export default function Invoice() {
           ((isValid && token && !isPosting)?(
             <Button title="ارسال" onPress={handleSubmit(onSubmit,onError)} />
           ):(
-            (isPosting)?(
-              <Button title="جاري الاتصال"/>
-            ):(
-              <Button title="اكمل البيانات"/>
-            )
+            <Button title={(isPosting)?("جاري الاتصال"):("اكمل البيانات")} disabled={true}/>
           ))
         }
       </Box>
-      </Flex>
+      </SafeAreaView>
   );
 }
 
