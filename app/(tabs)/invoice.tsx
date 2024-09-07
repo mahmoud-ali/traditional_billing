@@ -3,7 +3,7 @@ import { Alert,StyleSheet, ToastAndroid } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 
 import React from "react";
-import { Flex,Button,TextInput,Text,Box } from "@react-native-material/core";
+import { Button,TextInput,Text,Box } from "@react-native-material/core";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as SecureStore from 'expo-secure-store';
 

@@ -1,8 +1,9 @@
 import React from "react";
 
-import { Flex,Text,Box } from "@react-native-material/core";
-
+import { Text,Box } from "@react-native-material/core";
+import { SafeAreaView } from 'react-native-safe-area-context';
 import * as SecureStore from 'expo-secure-store';
+import { StyleSheet } from "react-native";
 
 export default function HomeScreen() {
   const [userData, setUserData] = React.useState({name:'',state:'',soag:''});
@@ -16,16 +17,22 @@ export default function HomeScreen() {
   }).catch((reason:any)=>{});
 
   return (
-    <Flex fill>
-      <Box h={100} mt={20} p={10}>
-      <Text variant="h4">مرحباً..</Text>
-      </Box>
+    <SafeAreaView>
       <Box p={10}>
-      <Text>المتحصل {userData.name}</Text>
-      <Text>الولاية {userData.state}</Text>
-      <Text>السوق {userData.soag}</Text>
-
+      <Text variant="h4">مرحباً..</Text>
+        <Text style={styles.wraper}><Text style={styles.label}>المتحصل: </Text><Text> {userData.name}</Text></Text>
+        <Text style={styles.wraper}><Text style={styles.label}>الولاية: </Text><Text> {userData.state}</Text></Text>
+        <Text style={styles.wraper}><Text style={styles.label}>السوق: </Text><Text> {userData.soag}</Text></Text>      
       </Box>
-      </Flex>
+      </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  wraper: {
+    flexDirection:'row',
+  },
+  label: {
+    fontWeight:'bold',
+  }
+})
