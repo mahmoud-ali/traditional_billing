@@ -1,10 +1,9 @@
-import { Alert,StyleSheet, ToastAndroid } from "react-native";
+import { Alert,StyleSheet, ToastAndroid,View } from "react-native";
 
 import { useForm, Controller } from "react-hook-form";
 
 import React from "react";
-import { Button,TextInput,Text,Box } from "@react-native-material/core";
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { Button,TextInput,Text } from 'react-native-paper';
 import * as SecureStore from 'expo-secure-store';
 
 export default function Invoice() {
@@ -76,9 +75,8 @@ export default function Invoice() {
   }
 
   return (
-    <SafeAreaView>
-      <Box p={10}>
-        <Text variant="h4">تحصيل التعدين التقليدي</Text>
+    <View style={styles.container}>
+        <Text variant="displaySmall">تحصيل التعدين التقليدي</Text>
         <Text>ادخل البيانات الاتية:</Text>
         <Controller
           control={control}
@@ -88,11 +86,12 @@ export default function Invoice() {
           }}
           render={({ field: { onChange, onBlur, value } }) => (
             <TextInput
-              placeholder="اسم المعدن"
+              label="اسم المعدن"
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
-
+              style={styles.input}
+              mode="outlined"
             />
           )}
           name="name"
@@ -107,11 +106,13 @@ export default function Invoice() {
         }}
           render={({ field: { onChange, onBlur, value } }) => (
             <TextInput
-              placeholder="عدد الشوالات"
+              label="عدد الشوالات"
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
               inputMode='numeric'
+              style={styles.input}
+              mode="outlined"
             />
           )}
           name="quantity_in_shoal"
@@ -126,11 +127,13 @@ export default function Invoice() {
         }}
           render={({ field: { onChange, onBlur, value } }) => (
             <TextInput
-              placeholder="مبلغ التحصيل بالجنيه"
+              label="مبلغ التحصيل بالجنيه"
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
               inputMode='decimal'
+              style={styles.input}
+              mode="outlined"
             />
           )}
           name="amount"
@@ -139,31 +142,22 @@ export default function Invoice() {
 
         {
           ((isValid && token && !isPosting)?(
-            <Button title="ارسال" onPress={handleSubmit(onSubmit,onError)} />
+            <Button mode="contained" onPress={handleSubmit(onSubmit,onError)} style={styles.input}>ارسال</Button>
           ):(
-            <Button title={(isPosting)?("جاري الاتصال"):("اكمل البيانات")} disabled={true}/>
+            <Button mode="contained" disabled={true} style={styles.input}>{(isPosting)?("جاري الاتصال"):("اكمل البيانات")}</Button>
           ))
         }
-      </Box>
-      </SafeAreaView>
+      </View>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  container: { 
+    flex: 1, 
+    // justifyContent: "center", 
+    marginHorizontal: 10 
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  input: { 
+    marginVertical: 5 
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
-});
+})

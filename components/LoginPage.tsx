@@ -56,6 +56,9 @@ export function LoginPage({onSucess}:any) {
         disableSignup
         disableSocialButtons
         disableDivider
+        passwordTextInputProps={{
+          enableIcon: false
+        }}
       />    
   );
 }

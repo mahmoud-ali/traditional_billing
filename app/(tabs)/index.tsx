@@ -1,10 +1,10 @@
 import React from "react";
 
-import { Text,Box } from "@react-native-material/core";
+import { Avatar, Card, IconButton, Text } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as SecureStore from 'expo-secure-store';
-import { RefreshControl, ScrollView, StyleSheet, View } from "react-native";
-import { BarChart, LineChart, PieChart, PopulationPyramid } from "react-native-gifted-charts";
+import {RefreshControl, ScrollView, StyleSheet, View } from "react-native";
+// import { BarChart, LineChart, PieChart, PopulationPyramid } from "react-native-gifted-charts";
 
 export default function HomeScreen() {
   const [userData, setUserData] = React.useState({name:'',state:'',soag:''});
@@ -28,28 +28,40 @@ export default function HomeScreen() {
   const data=[ {value:50,label:'A'}, {value:80,label:'B'}, {value:90,label:'C'}, {value:70,label:'D'} ]  
 
   return (
-    <SafeAreaView>
+    <>
       <ScrollView
+      style={styles.container}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }>        
-        <Text variant="h4">مرحباً..</Text>
-        <Text style={styles.wraper}><Text style={styles.label}>المتحصل: </Text><Text> {userData.name}</Text></Text>
-        <Text style={styles.wraper}><Text style={styles.label}>الولاية: </Text><Text> {userData.state}</Text></Text>
-        <Text style={styles.wraper}><Text style={styles.label}>السوق: </Text><Text> {userData.soag}</Text></Text>      
+        }>     
+        <Text variant="displaySmall">مرحباً..</Text>
+  <Card.Title
+    title={userData.name}
+    subtitle={userData.state+' / '+userData.soag} 
+    left={(props) => <Avatar.Icon {...props} icon="search" />}
+    right={(props) => <IconButton {...props} icon="dots-vertical" onPress={() => {}} />}
+  />
+        {/* <Text style={styles.row}><Text style={styles.label}>المتحصل: </Text><Text> {userData.name}</Text></Text>
+        <Text style={styles.row}><Text style={styles.label}>الولاية: </Text><Text> {userData.state}</Text></Text>
+        <Text style={styles.row}><Text style={styles.label}>السوق: </Text><Text> {userData.soag}</Text></Text>       */}
           {/* <BarChart data = {data} adjustToWidth={true} barWidth={22} noOfSections={3} barBorderRadius={4} frontColor={'#177AD5'}/> */}
           {/* <LineChart data = {data} /> */}
           {/* <PieChart data = {data} /> */}
         </ScrollView>
-      </SafeAreaView>
+      </>
   );
 }
 
 const styles = StyleSheet.create({
-  wraper: {
-    flexDirection:'row',
+  container: {
+    flex: 1, 
+    // justifyContent: "center", 
+    margin: 10,
   },
   label: {
     fontWeight:'bold',
   },
+  row: {
+    marginVertical: 5,
+  }
 })

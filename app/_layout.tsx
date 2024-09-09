@@ -6,16 +6,23 @@ import { StatusBar} from "react-native";
 
 import 'react-native-reanimated';
 
-import { useColorScheme } from '@/hooks/useColorScheme';
-import { Flex,Box } from "@react-native-material/core";
+import { MD3LightTheme as DefaultTheme, PaperProvider, ThemeProvider } from 'react-native-paper';
 
 import { LoginPage } from "@/components/LoginPage";
 
+
+const theme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    // primary: 'tomato',
+    // secondary: 'yellow',
+  },
+};
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   });
@@ -35,20 +42,25 @@ export default function RootLayout() {
 
   return (
     (isLoggedin?(
-      // <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-    // </ThemeProvider>
+      <>
+        <StatusBar />
+        <PaperProvider  theme={theme}>
+          <ThemeProvider>
+            <Stack>
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              <Stack.Screen name="+not-found" />
+            </Stack>
+          </ThemeProvider>
+        </PaperProvider>
+      </>
     ):(
-      <Flex fill>
-        <StatusBar barStyle="light-content" />
-        <Box h={20}></Box>
-
-        <LoginPage onSucess={()=>{setIsLoggedin(true)}
-} />
-      </Flex>
+      <>
+        <StatusBar />
+        <PaperProvider theme={theme}>
+          <LoginPage onSucess={()=>{setIsLoggedin(true)}} />
+        </PaperProvider>
+      </>
     ))
+    
   );
 }
