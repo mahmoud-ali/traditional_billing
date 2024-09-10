@@ -8,7 +8,7 @@ export function LoginPage({onSucess}:any) {
   const [password, setPassword] = React.useState('');
   const [isPosting, setIsPosting] = React.useState(false);
   
-  function login_request(){
+  const login_request = React.useCallback(()=>{
     if(isPosting || !username || !password) return;
 
     setIsPosting(true);
@@ -40,7 +40,7 @@ export function LoginPage({onSucess}:any) {
         // console.error("error",error);
       });        
   
-  }
+  }, [isPosting,username,password]);
   
   
   return (

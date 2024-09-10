@@ -12,7 +12,7 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: true,
+        headerShown: false,
         headerTitleAlign:'center',
       }}>
       <Tabs.Screen
@@ -29,7 +29,7 @@ export default function TabLayout() {
         options={{
           title: 'أمر تحصيل',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'receipt' : 'receipt-outline'} color={color} />
+            <TabBarIcon name={focused ? 'script-text' : 'script-text-outline'} color={color} />
           ),
         }}
       />

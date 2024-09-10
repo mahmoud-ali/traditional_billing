@@ -6,9 +6,9 @@ import { StatusBar} from "react-native";
 
 import 'react-native-reanimated';
 
-import { MD3LightTheme as DefaultTheme, PaperProvider, ThemeProvider } from 'react-native-paper';
+import { Appbar, MD3LightTheme as DefaultTheme, PaperProvider, ThemeProvider } from 'react-native-paper';
 
-import { LoginPage } from "@/components/LoginPage";
+import { LoginPage } from "@/screens/loginPage";
 
 
 const theme = {
