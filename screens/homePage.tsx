@@ -1,13 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 
 import { Appbar, Avatar, Card, IconButton, Text } from 'react-native-paper';
-import * as SecureStore from 'expo-secure-store';
 import {RefreshControl, ScrollView, StyleSheet, ToastAndroid, View } from "react-native";
 import { InvoiceList } from "@/components/invoiceList";
+import {UserContext} from "@/app/_layout"
 // import { BarChart, LineChart, PieChart, PopulationPyramid } from "react-native-gifted-charts";
 
 export default function HomePage() {
-  const [userData, setUserData] = React.useState({token:'',name:'',state:'',soag:''});
+  const userData = useContext(UserContext);
   const [items,setItems] = React.useState([]);
   const [isLoadingInvoiceList,setIsLoadingInvoiceList] = React.useState(false);
 
@@ -54,27 +54,9 @@ export default function HomePage() {
     getData(userData.token);    
   },[userData, items, isLoadingInvoiceList, refreshing]);
 
-  const getUserData = React.useCallback(()=>{
-    console.log('getUserData')
-    if(userData.token.length!=0) return;
-
-    console.log('token',userData.token)
-    const userdata_str = SecureStore
-      .getItemAsync('userdata',{})
-      .then(async (userdata_str:any)=>{
-        if (userdata_str){
-          const data = JSON.parse(userdata_str)      
-          setUserData(data);
-          setRefreshing(false);
-          await getData(data.token);    
-        }
-      })
-  },[userData]);
-
-
   useEffect(() => {
-    getUserData();
-  }, [userData, items, isLoadingInvoiceList, refreshing]);
+    getData(userData.token);
+  }, []);
   
   return (
     <>

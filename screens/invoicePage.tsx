@@ -2,9 +2,9 @@ import { Alert,StyleSheet, ToastAndroid,View } from "react-native";
 
 import { useForm, Controller } from "react-hook-form";
 
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { Button,TextInput,Text, Appbar } from 'react-native-paper';
-import * as SecureStore from 'expo-secure-store';
+import {UserContext} from "@/app/_layout"
 
 export default function InvoicePage() {
   interface InvoiceType {
@@ -13,45 +13,26 @@ export default function InvoicePage() {
     amount:string
   }
 
-  let token = '';
+  const userData = useContext(UserContext);
 
-  const [tokenChanged, setTokenChanged] = React.useState(false);
   const [isPosting, setIsPosting] = React.useState(false);
 
-  const getUserData = React.useCallback(()=>{
-    console.log('getUserData2')
-    // if(token.length!=0) return;
-
-    console.log('token2',token)
-    SecureStore
-      .getItemAsync('userdata',{})
-      .then((userdata_str:any)=>{
-        if (userdata_str){
-          const data = JSON.parse(userdata_str)      
-          if(data.token != token){
-            token = data.token;
-            setTokenChanged(true)
-          }  
-              }
-      })
-  },[]);
-
   const invoice_request = React.useCallback((data:InvoiceType)=>{
-    if(token.length==0){
+    if(userData.token.length==0){
       console.log('no token2')
       return;
     }
 
     setIsPosting(true);
     ToastAndroid.showWithGravity('Connecting..', ToastAndroid.SHORT,ToastAndroid.BOTTOM);
-    console.log('token=',token)
+    console.log('requesting...')
     fetch('https://mineralsgate.com/app/api-traditional/invoice/',{
       method: 'POST',
       body: JSON.stringify(data),          
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        'Authorization': 'token '+token
+        'Authorization': 'token '+userData.token
       },          
     }).then(response => {
         setIsPosting(false)
@@ -93,10 +74,6 @@ export default function InvoicePage() {
       amount: ''
     }
   });
-
-  useEffect(() => {
-    getUserData();
-  }, []);
 
   return (
     <>
@@ -171,7 +148,7 @@ export default function InvoicePage() {
           {errors.amount && <Text>الحقل مطلوب (رقمي).</Text>}
 
           {
-            ((isValid && tokenChanged && !isPosting)?(
+            ((isValid && userData.token && !isPosting)?(
               <Button mode="contained" onPress={handleSubmit(onSubmit,onError)} style={styles.input}>ارسال</Button>
             ):(
               <Button mode="contained" disabled={true} style={styles.input}>{(isPosting)?("جاري الاتصال"):("اكمل البيانات")}</Button>
