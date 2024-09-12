@@ -40,7 +40,7 @@ export function LoginPage({onSucess}:any) {
         // console.error("error",error);
       });        
   
-  }, [isPosting,username,password]);
+  }, [username,password]);
   
   
   return (

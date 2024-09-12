@@ -47,16 +47,16 @@ export default function HomePage() {
       setRefreshing(false);
       setIsLoadingInvoiceList(false)
     }
-  },[userData, items, isLoadingInvoiceList, refreshing]);
+  },[]);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     getData(userData.token);    
-  },[userData, items, isLoadingInvoiceList, refreshing]);
+  },[userData]);
 
   useEffect(() => {
     getData(userData.token);
-  }, []);
+  }, [userData]);
   
   return (
     <>
@@ -65,28 +65,28 @@ export default function HomePage() {
         <Appbar.Content title="تحصيل التعدين التقليدي" titleStyle={{textAlign: 'center'}} />
         <Appbar.Action icon="account-circle" onPress={() => {}} />
       </Appbar.Header>
-      <ScrollView
-      style={{flex:1}}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }> 
-        <View style={styles.container}>
-          {/* <Card.Title
-            title={userData.name}
-            subtitle={userData.state+' / '+userData.soag} 
-            left={(props) => <Avatar.Icon {...props} icon="account" />}
-            right={(props) => <IconButton {...props} icon="dots-vertical" onPress={() => {}} />}
-          /> */}
-          <InvoiceList title={'اخر '+items.length+' معاملات'} items={items} loading={items.length==0} />
-          {/* <Text style={styles.row}><Text style={styles.label}>المتحصل: </Text><Text> {userData.name}</Text></Text>
-          <Text style={styles.row}><Text style={styles.label}>الولاية: </Text><Text> {userData.state}</Text></Text>
-          <Text style={styles.row}><Text style={styles.label}>السوق: </Text><Text> {userData.soag}</Text></Text>       */}
-            {/* <BarChart data = {data} adjustToWidth={true} barWidth={22} noOfSections={3} barBorderRadius={4} frontColor={'#177AD5'}/> */}
-            {/* <LineChart data = {data} /> */}
-            {/* <PieChart data = {data} /> */}
-          </View>    
-        </ScrollView>
-      </>
+      <View style={styles.container}>
+        <ScrollView
+        style={{flex:1}}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }> 
+            {/* <Card.Title
+              title={userData.name}
+              subtitle={userData.state+' / '+userData.soag} 
+              left={(props) => <Avatar.Icon {...props} icon="account" />}
+              right={(props) => <IconButton {...props} icon="dots-vertical" onPress={() => {}} />}
+            /> */}
+            <InvoiceList title={'اخر '+items.length+' معاملات'} items={items} loading={items.length==0} />
+            {/* <Text style={styles.row}><Text style={styles.label}>المتحصل: </Text><Text> {userData.name}</Text></Text>
+            <Text style={styles.row}><Text style={styles.label}>الولاية: </Text><Text> {userData.state}</Text></Text>
+            <Text style={styles.row}><Text style={styles.label}>السوق: </Text><Text> {userData.soag}</Text></Text>       */}
+              {/* <BarChart data = {data} adjustToWidth={true} barWidth={22} noOfSections={3} barBorderRadius={4} frontColor={'#177AD5'}/> */}
+              {/* <LineChart data = {data} /> */}
+              {/* <PieChart data = {data} /> */}
+          </ScrollView>
+        </View>    
+        </>
   );
 }
 

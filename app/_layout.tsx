@@ -43,18 +43,20 @@ export default function RootLayout() {
     console.log('token',userData.token)
     SecureStore
       .getItemAsync('userdata',{})
-      .then(async (userdata_str:any)=>{
+      .then((userdata_str:any)=>{
         if (userdata_str){
           const data = JSON.parse(userdata_str)      
+          console.log(data)
           setUserData(data);
         }
       })
-  },[userData]);
-
+  },[]);
 
   useEffect(() => {
-    getUserData();
-  }, []);
+    if(isLoggedin){
+      getUserData();
+    }
+  }, [isLoggedin]);
 
   useEffect(() => {
     if (loaded) {
