@@ -1,14 +1,16 @@
 import React, { useContext, useEffect } from "react";
 
-import { Appbar, Avatar, Card, IconButton, Text } from 'react-native-paper';
-import {RefreshControl, ScrollView, StyleSheet, ToastAndroid, View } from "react-native";
+// import { Appbar, Avatar, Card, IconButton, Portal, Text } from 'react-native-paper';
+import { RefreshControl, ScrollView, StyleSheet, ToastAndroid, View } from "react-native";
 import { InvoiceList } from "@/components/invoiceList";
+import { Header } from "@/components/header";
 import {UserContext} from "@/app/_layout"
 // import { BarChart, LineChart, PieChart, PopulationPyramid } from "react-native-gifted-charts";
 
 export default function HomePage() {
   const userData = useContext(UserContext);
   const [items,setItems] = React.useState([]);
+
   const [isLoadingInvoiceList,setIsLoadingInvoiceList] = React.useState(false);
 
   const [refreshing, setRefreshing] = React.useState(false);
@@ -60,11 +62,7 @@ export default function HomePage() {
   
   return (
     <>
-      <Appbar.Header>
-        {/* <Appbar.BackAction onPress={() => {}} /> */}
-        <Appbar.Content title="تحصيل التعدين التقليدي" titleStyle={{textAlign: 'center'}} />
-        <Appbar.Action icon="account-circle" onPress={() => {}} />
-      </Appbar.Header>
+      <Header showBack={false} showProfile={true} />
       <View style={styles.container}>
         <ScrollView
         style={{flex:1}}

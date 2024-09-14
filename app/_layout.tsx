@@ -2,32 +2,33 @@ import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import React,{ createContext, useEffect } from 'react';
-import { StatusBar} from "react-native";
+import { StatusBar, useColorScheme} from "react-native";
+import { useMaterial3Theme } from "@pchmn/expo-material3-theme"
+import { Colors } from '@/constants/Colors';
 
 import 'react-native-reanimated';
 
-import { Appbar, MD3LightTheme as DefaultTheme, PaperProvider, ThemeProvider } from 'react-native-paper';
+import { Appbar, MD3DarkTheme, MD3LightTheme, PaperProvider, ThemeProvider, useTheme } from 'react-native-paper';
 
 import * as SecureStore from 'expo-secure-store';
 
 import { LoginPage } from "@/screens/loginPage";
 
 
-const theme = {
-  ...DefaultTheme,
-  colors: {
-    ...DefaultTheme.colors,
-    // primary: 'tomato',
-    // secondary: 'yellow',
-  },
-};
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export const UserContext = createContext({token:'',name:'',state:'',soag:''})
 
 export default function RootLayout() {
+  const colorScheme = useColorScheme();
+  const { theme } = useMaterial3Theme();
 
+  const paperTheme = { ...MD3LightTheme, ...Colors.light.colors, colors: theme.light }
+    // colorScheme === 'dark'
+    //   ? { ...MD3DarkTheme, ...Colors.dark.colors, colors: theme.dark }
+    //   : { ...MD3LightTheme, ...Colors.light.colors, colors: theme.light };
+    
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   });
@@ -71,15 +72,16 @@ export default function RootLayout() {
   return (
     (isLoggedin?(
       <>
-        <StatusBar />
         <UserContext.Provider value={userData}>
-          <PaperProvider  theme={theme}>
-            <ThemeProvider>
+          <PaperProvider theme={paperTheme}>
+            {/* <ThemeProvider theme={paperTheme}> */}
+            <StatusBar />
+
               <Stack>
                 <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
                 <Stack.Screen name="+not-found" />
               </Stack>
-            </ThemeProvider>
+            {/* </ThemeProvider> */}
           </PaperProvider>
         </UserContext.Provider>
       </>

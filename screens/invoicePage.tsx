@@ -2,9 +2,11 @@ import { Alert,StyleSheet, ToastAndroid,View } from "react-native";
 
 import { useForm, Controller } from "react-hook-form";
 
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
+// import { useFocusEffect } from 'expo-router';
 import { Button,TextInput,Text, Appbar } from 'react-native-paper';
 import {UserContext} from "@/app/_layout"
+import { Header } from "@/components/header";
 
 export default function InvoicePage() {
   interface InvoiceType {
@@ -16,6 +18,16 @@ export default function InvoicePage() {
   const userData = useContext(UserContext);
 
   const [isPosting, setIsPosting] = React.useState(false);
+
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     console.log('Hello, I am focused!');
+
+  //     return () => {
+  //       console.log('This route is now unfocused.');
+  //     }
+  //   }, [])
+  // );
 
   const invoice_request = React.useCallback((data:InvoiceType)=>{
     if(userData.token.length==0){
@@ -77,11 +89,7 @@ export default function InvoicePage() {
 
   return (
     <>
-      <Appbar.Header>
-        {/* <Appbar.BackAction onPress={() => {}} /> */}
-        <Appbar.Content title="تحصيل التعدين التقليدي" titleStyle={{textAlign: 'center'}} />
-        <Appbar.Action icon="account-circle" onPress={() => {}} />
-      </Appbar.Header>
+      <Header showBack={false} showProfile={true} />
       <View style={styles.container}>
           {/* <Text variant="displaySmall">تحصيل التعدين التقليدي</Text> */}
           <Text variant="headlineSmall" style={{marginTop: 10}}>ادخل البيانات الاتية:</Text>
