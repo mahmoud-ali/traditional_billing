@@ -89,7 +89,6 @@ export default function InvoicePage() {
 
   return (
     <>
-      <Header showBack={false} showProfile={true} />
       <View style={styles.container}>
           {/* <Text variant="displaySmall">تحصيل التعدين التقليدي</Text> */}
           <Text variant="headlineSmall" style={{marginTop: 10}}>ادخل البيانات الاتية:</Text>
@@ -174,7 +173,7 @@ const styles = StyleSheet.create({
     // justifyContent: "center", 
     // marginHorizontal: 10,
     paddingHorizontal:10,
-    backgroundColor: '#FFF'
+    // backgroundColor: '#FFF'
   },
   input: { 
     marginVertical: 5 

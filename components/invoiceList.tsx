@@ -65,25 +65,25 @@ export function InvoiceList(props:{title:string,loading:boolean,items:Array<{inv
             />
         </DataTable>    
         <Portal>
-          <Modal visible={visibleModal} onDismiss={hideModal} contentContainerStyle={{backgroundColor: 'white', padding: 20,margin:10}}>
+          <Modal visible={visibleModal} onDismiss={hideModal} contentContainerStyle={styles.modal}>
             <View>  
-              <Text variant="headlineSmall">تفاصيل امر التحصيل:</Text>
+              <Text variant="headlineSmall" style={styles.bold_text}>تفاصيل امر التحصيل:</Text>
 
               <Text>
-                <Text style={{fontWeight:"bold"}}>رقم الامر: </Text>
-                <Text>{itemModal.invoiceId}</Text>
+                <Text style={styles.bold_text}>رقم الامر: </Text>
+                <Text style={styles.normal_text}>{itemModal.invoiceId}</Text>
               </Text>
               <Text>
-                <Text style={{fontWeight:"bold"}}>اسم المعدن: </Text>
-                <Text>{itemModal.name}</Text>
+                <Text style={styles.bold_text}>اسم المعدن: </Text>
+                <Text style={styles.normal_text}>{itemModal.name}</Text>
               </Text>
               <Text>
-                <Text style={{fontWeight:"bold"}}>عدد الشوالات: </Text>
-                <Text>{itemModal.quantity_in_shoal}</Text>
+                <Text style={styles.bold_text}>عدد الشوالات: </Text>
+                <Text style={styles.normal_text}>{itemModal.quantity_in_shoal}</Text>
               </Text>
               <Text>
-                <Text style={{fontWeight:"bold"}}>المبلغ: </Text>
-                <Text>{itemModal.amount}</Text>
+                <Text style={styles.bold_text}>المبلغ: </Text>
+                <Text style={styles.normal_text}>{itemModal.amount}</Text>
               </Text>
             </View>
           </Modal>
@@ -93,11 +93,20 @@ export function InvoiceList(props:{title:string,loading:boolean,items:Array<{inv
     );
   }
   
-  const containerStyle = StyleSheet.create({
+  const styles = StyleSheet.create({
     modal: {
-      // backgroundColor:'white',
-      padding:20,
-      width:'90%',
-      alignSelf:"center" 
+      backgroundColor:'white',
+      padding: 20,
+      margin: 10,
+      // alignSelf:"center",
+      color: '#333'
+
+    },
+    bold_text: {
+      color: '#333',
+      fontWeight:"bold"
+    },
+    normal_text: {
+      color: '#333',
     }
   });

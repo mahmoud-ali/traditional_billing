@@ -62,7 +62,6 @@ export default function HomePage() {
   
   return (
     <>
-      <Header showBack={false} showProfile={true} />
       <View style={styles.container}>
         <ScrollView
         style={{flex:1}}
@@ -93,7 +92,7 @@ const styles = StyleSheet.create({
     flex: 1, 
     justifyContent: "flex-start", 
     paddingHorizontal:10,
-    backgroundColor: '#FFF'
+    // backgroundColor: '#FFF'
   },
   label: {
     fontWeight:'bold',

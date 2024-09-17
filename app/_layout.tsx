@@ -2,17 +2,18 @@ import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import React,{ createContext, useEffect } from 'react';
-import { StatusBar, useColorScheme} from "react-native";
-import { useMaterial3Theme } from "@pchmn/expo-material3-theme"
-import { Colors } from '@/constants/Colors';
+import { StatusBar } from "react-native";
 
 import 'react-native-reanimated';
 
-import { Appbar, MD3DarkTheme, MD3LightTheme, PaperProvider, ThemeProvider, useTheme } from 'react-native-paper';
+import { PaperProvider } from 'react-native-paper';
+import { ThemeProvider } from "@react-navigation/native";
+import { getTheme } from '@/constants/Colors';
 
 import * as SecureStore from 'expo-secure-store';
 
 import { LoginPage } from "@/screens/loginPage";
+import { Header } from '@/components/header';
 
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -21,13 +22,8 @@ SplashScreen.preventAutoHideAsync();
 export const UserContext = createContext({token:'',name:'',state:'',soag:''})
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const { theme } = useMaterial3Theme();
 
-  const paperTheme = { ...MD3LightTheme, ...Colors.light.colors, colors: theme.light }
-    // colorScheme === 'dark'
-    //   ? { ...MD3DarkTheme, ...Colors.dark.colors, colors: theme.dark }
-    //   : { ...MD3LightTheme, ...Colors.light.colors, colors: theme.light };
+  const paperTheme = getTheme();
     
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
@@ -47,7 +43,7 @@ export default function RootLayout() {
       .then((userdata_str:any)=>{
         if (userdata_str){
           const data = JSON.parse(userdata_str)      
-          console.log(data)
+          // console.log(data)
           setUserData(data);
         }
       })
@@ -73,22 +69,23 @@ export default function RootLayout() {
     (isLoggedin?(
       <>
         <UserContext.Provider value={userData}>
-          <PaperProvider theme={paperTheme}>
-            {/* <ThemeProvider theme={paperTheme}> */}
-            <StatusBar />
 
-              <Stack>
-                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-                <Stack.Screen name="+not-found" />
-              </Stack>
-            {/* </ThemeProvider> */}
-          </PaperProvider>
+            <PaperProvider theme={paperTheme}>
+            <ThemeProvider value={paperTheme}>
+
+                  <Stack screenOptions={{header: (props) =>  <Header showBack={false} showProfile={true} />}}>
+                    <Stack.Screen name="(tabs)" options={{ headerShown: true }} />
+                    <Stack.Screen name="+not-found" />
+                  </Stack>
+                  </ThemeProvider>
+                  </PaperProvider>
+
         </UserContext.Provider>
       </>
     ):(
       <>
         <StatusBar />
-        <PaperProvider theme={theme}>
+        <PaperProvider theme={paperTheme}>
           <LoginPage onSucess={()=>{setIsLoggedin(true)}} />
         </PaperProvider>
       </>
