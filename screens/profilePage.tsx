@@ -3,7 +3,7 @@ import { View, StyleSheet } from "react-native";
 import { useNavigation } from 'expo-router';
 import { Avatar, Button, Text } from 'react-native-paper';
 import { Header } from "@/components/header";
-import { UserContext } from "@/app/_layout";
+import { UserContext, LogoutContext } from "@/app/_layout";
 
 import { PaperProvider } from 'react-native-paper';
 import { ThemeProvider } from "@react-navigation/native";
@@ -12,6 +12,7 @@ import { getTheme } from '@/constants/Colors';
 
 export default function ProfilePage(props:any) {
     const userData = useContext(UserContext);
+    const logout = useContext(LogoutContext);
 
     const navigation = useNavigation();
     useEffect(() => {
@@ -31,6 +32,7 @@ export default function ProfilePage(props:any) {
             <Text variant="titleLarge" style={styles.text}>{userData.name}</Text>
             <Text variant="bodyMedium" style={styles.text}>{userData.state}</Text>
             <Text variant="bodyMedium" style={styles.text}>{userData.soag}</Text>
+            <Button mode="contained" onPress={logout} style={styles.button}>تسجيل الخروج</Button>
           </View>
           </ThemeProvider>
         </PaperProvider>
@@ -50,6 +52,9 @@ export default function ProfilePage(props:any) {
       },
       text: {
         // color: "#eee"
+      },
+      button: {
+        marginVertical: 5 
       }
     
     })

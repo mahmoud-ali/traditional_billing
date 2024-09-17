@@ -20,6 +20,7 @@ import { Header } from '@/components/header';
 SplashScreen.preventAutoHideAsync();
 
 export const UserContext = createContext({token:'',name:'',state:'',soag:''})
+export const LogoutContext = createContext<any>(undefined)
 
 export default function RootLayout() {
 
@@ -33,8 +34,16 @@ export default function RootLayout() {
 
   const [userData, setUserData] = React.useState({token:'',name:'',state:'',soag:''});
 
+  const setLogout = React.useCallback(()=>{
+    SecureStore.deleteItemAsync('userdata',{})
+      .then(()=>{
+          setUserData({token:'',name:'',state:'',soag:''});
+          setIsLoggedin(false);
+      })
+
+  },[isLoggedin]);
   const getUserData = React.useCallback(()=>{
-    console.log('getUserData')
+      console.log('getUserData')
     if(userData.token.length!=0) return;
 
     console.log('token',userData.token)
@@ -68,25 +77,24 @@ export default function RootLayout() {
   return (
     (isLoggedin?(
       <>
-        <UserContext.Provider value={userData}>
-
+        <LogoutContext.Provider value={setLogout}>
+          <UserContext.Provider value={userData}>
             <PaperProvider theme={paperTheme}>
-            <ThemeProvider value={paperTheme}>
-
-                  <Stack screenOptions={{header: (props) =>  <Header showBack={false} showProfile={true} />}}>
-                    <Stack.Screen name="(tabs)" options={{ headerShown: true }} />
-                    <Stack.Screen name="+not-found" />
-                  </Stack>
-                  </ThemeProvider>
-                  </PaperProvider>
-
-        </UserContext.Provider>
+              <ThemeProvider value={paperTheme}>
+                <Stack screenOptions={{ header: (props) => <Header showBack={false} showProfile={true} /> }}>
+                  <Stack.Screen name="(tabs)" options={{ headerShown: true }} />
+                  <Stack.Screen name="+not-found" />
+                </Stack>
+              </ThemeProvider>
+            </PaperProvider>
+          </UserContext.Provider>
+        </LogoutContext.Provider>
       </>
     ):(
       <>
         <StatusBar />
         <PaperProvider theme={paperTheme}>
-          <LoginPage onSucess={()=>{setIsLoggedin(true)}} />
+          <LoginPage onSucess={() => { setIsLoggedin(true) }} />
         </PaperProvider>
       </>
     ))
